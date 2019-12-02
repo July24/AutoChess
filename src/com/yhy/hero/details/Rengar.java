@@ -10,8 +10,8 @@ public class Rengar extends Hero implements Assassin, Wild {
 		title = "虚空遁地兽";
 		price = 4;
 		//TODO
-		skillName = "ħ������";
-		skillDesc = "��ͨ������Ϊ �����һ��";
+		skillName = "待开发";
+		skillDesc = "待开发";
 	}
 	
 	protected void skill() {

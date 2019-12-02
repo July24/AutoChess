@@ -26,6 +26,17 @@ public class Player {
 		exp = 0;
 	}
 
+	public boolean sellHero(Hero hero) {
+		boolean b1 = removeBoardHero(hero);
+		boolean b2 = removeAreaHero(hero);
+		if(b1 || b2) {
+			money += hero.getSellingPrice();
+			heroShop.sellHero(hero);
+			return true;
+		}
+		return false;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -57,6 +68,14 @@ public class Player {
 
 	public List<Hero> getArea() {
 		return area.getPrepareHero();
+	}
+
+	public boolean areaEmpty() {
+		return getArea().size() == 0;
+	}
+
+	public int getAreaHeroCount() {
+		return getArea().size();
 	}
 
 	public void setArea(PrepareArea area) {
@@ -116,12 +135,60 @@ public class Player {
 	public static final int BUYHERO_SUCCESS   = 0;
 	public static final int BUYHERO_NO_MONEY  = -1;
 	public static final int BUYHERO_AREA_FULL = -2;
-	
-	/**
-	 * 0	�ɹ�
-	 * -1 	����
-	 * -2	׼������
-	 */
+
+	public Hero heroAutoUpdate(Hero hero) {
+	    if(hero.getStar().length() > 2) {
+	        return null;
+        }
+	    ArrayList<Hero> list = new ArrayList<>();
+	    Hero wait = null;
+	    getBoardSameHero(list, hero);
+        getAreaSameHero(list, hero);
+        if(list.size() >= 3) {
+            int i = 0;
+            while (i < 2) {
+                if(removeAreaSameHero(hero)) {
+                    i++;
+                } else if(removeBoardSameHero(hero)) {
+                    i++;
+                }
+            }
+            wait = getBoardSameHero(hero);
+            if(wait == null) {
+                wait = getAreaSameHero(hero);
+            }
+            wait.update();
+            Hero ret = heroAutoUpdate(wait);
+            wait = ret != null ? ret : wait;
+        }
+        return wait;
+    }
+
+    private void getBoardSameHero(ArrayList<Hero> list, Hero hero) {
+        Hero[][] chess = board.getChess();
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                Hero board = chess[i][j];
+                if(board == null) {
+                    continue;
+                }
+                if(board.equals(hero)) {
+                    list.add(board);
+                }
+            }
+        }
+    }
+
+    private void getAreaSameHero(ArrayList<Hero> list, Hero hero) {
+        List<Hero> prepareHero = area.getPrepareHero();
+        for(int i = 0; i < prepareHero.size(); i++) {
+            Hero prepare = prepareHero.get(i);
+            if(prepare.equals(hero)) {
+                list.add(prepare);
+            }
+        }
+    }
+
 	public int buyHero(Hero hero) {
 		if(money < hero.getPrice()) {
 			return BUYHERO_NO_MONEY;
@@ -242,7 +309,77 @@ public class Player {
 		Hero[][] chess = board.getChess();
 		chess[row][col] = hero;
 	}
-	
+    public Hero getAreaSameHero(Hero hero) {
+        List<Hero> list = area.getPrepareHero();
+        for(int i = 0; i < list.size(); i++) {
+            Hero area = list.get(i);
+            if(hero.equals(area)) {
+                return area;
+            }
+        }
+        return null;
+    }
+
+    public boolean removeAreaSameHero(Hero hero) {
+        List<Hero> list = area.getPrepareHero();
+        for(int i = 0; i < list.size(); i++) {
+            if(hero.equals(list.get(i))) {
+                list.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+	public boolean removeAreaHero(Hero hero) {
+		List<Hero> list = area.getPrepareHero();
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i) == hero) {
+				list.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean removeBoardHero(Hero hero) {
+		Hero[][] chess = board.getChess();
+		for(int i = 0; i < 3; i++) {
+			for(int j = 0; j < 3; j++) {
+				if(chess[i][j] == hero) {
+					chess[i][j] = null;
+					return true;
+				}
+			}
+		}
+ 		return false;
+	}
+    public boolean removeBoardSameHero(Hero hero) {
+        Hero[][] chess = board.getChess();
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                if(hero.equals(chess[i][j])) {
+                    chess[i][j] = null;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public Hero getBoardSameHero(Hero hero) {
+        Hero[][] chess = board.getChess();
+        for(int i = 0; i < 3; i++) {
+            for(int j = 0; j < 3; j++) {
+                Hero board = chess[i][j];
+                if(hero.equals(board)) {
+                    return board;
+                }
+            }
+        }
+        return null;
+    }
+
 	public Hero removeBoardHero(int pos) {
 		int row = (pos-1) / 3;
 		int col = (pos-1) % 3;
@@ -251,7 +388,7 @@ public class Player {
 		chess[row][col] = null;
 		return hero;
 	}
-	
+
 	public boolean heroEnd(int pos) {
 		if(area.full()) {
 			return false;

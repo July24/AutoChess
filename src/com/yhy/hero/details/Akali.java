@@ -10,8 +10,8 @@ public class Akali extends Hero implements Assassin, Ninja{
 		title = "离群之刺";
 		price = 2;
 		//TODO
-		skillName = "ħ������";
-		skillDesc = "��ͨ������Ϊ �����һ��";
+		skillName = "待开发";
+		skillDesc = "待开发";
 	}
 	
 	protected void skill() {

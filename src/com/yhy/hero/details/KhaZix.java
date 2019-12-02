@@ -10,8 +10,8 @@ public class KhaZix extends Hero implements Assassin, DarkVoid {
 		title = "虚空掠夺者";
 		price = 3;
 		//TODO
-		skillName = "ħ������";
-		skillDesc = "��ͨ������Ϊ �����һ��";
+		skillName = "待开发";
+		skillDesc = "待开发";
 	}
 	
 	protected void skill() {

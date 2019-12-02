@@ -13,7 +13,6 @@ public class Entrance {
 		System.out.println("**************************");
 		System.out.println("********1.对战电脑***********");
 		System.out.println(FlowConst.LINE);
-		
 		Scanner scan = new Scanner(System.in);
 		int i = scan.nextInt();
 		if(i == 1) {

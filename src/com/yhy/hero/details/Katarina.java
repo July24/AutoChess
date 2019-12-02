@@ -10,8 +10,8 @@ public class Katarina extends Hero implements Assassin, Imperial{
 		title = "不祥之刃";
 		price = 2;
 		//TODO
-		skillName = "ħ������";
-		skillDesc = "��ͨ������Ϊ �����һ��";
+		skillName = "待开发";
+		skillDesc = "待开发";
 	}
 	
 	protected void skill() {

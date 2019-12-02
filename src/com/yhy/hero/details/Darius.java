@@ -10,8 +10,8 @@ public class Darius extends Hero implements BladeMaster, Imperial{
 		title = "诺克萨斯之手";
 		price = 2;
 		//TODO
-		skillName = "ħ������";
-		skillDesc = "��ͨ������Ϊ �����һ��";
+		skillName = "待开发";
+		skillDesc = "待开发";
 	}
 	
 	protected void skill() {

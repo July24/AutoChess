@@ -10,8 +10,8 @@ public class Fiora extends Hero implements BladeMaster, Noble {
 		title = "无双剑姬";
 		price = 4;
 		//TODO
-		skillName = "ħ������";
-		skillDesc = "��ͨ������Ϊ �����һ��";
+		skillName = "待开发";
+		skillDesc = "待开发";
 	}
 	
 	protected void skill() {

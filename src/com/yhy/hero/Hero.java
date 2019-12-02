@@ -20,20 +20,52 @@ public abstract class Hero {
 		this.star = star;
 	}
 
-	//Ӣ����
 	protected String name;
-	//Ӣ�۳ƺ�
 	protected String title;
-	// Ӣ�ۼ�����
 	protected String skillName;
-	//��������
 	protected String skillDesc;
-	//Ӣ���Ǽ�
-	protected String star = "★";
-	//Ӣ�ۼ۸�
+
+	public static final String DEFAULT_STAR = "★";
+	protected String star = DEFAULT_STAR;
 	protected int price;
-	//����ӵ����
+
+	public void resetStar() {
+		star = DEFAULT_STAR;
+	}
+
+	public void starUp() {
+		star += DEFAULT_STAR;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) {
+			return false;
+		}
+		if(!(obj instanceof Hero)) {
+			return false;
+		}
+		Hero hero = (Hero)obj;
+		return this.name.equals(hero.name) && this.star.equals(hero.star);
+	}
+
+	public int getSellingPrice() {
+		switch (star.length()) {
+			case 1 :
+				return price;
+			case 2 :
+				return (int)Math.floor(price * 3 * 0.8);
+			case 3 :
+				return (int)Math.floor(price * 9 * 0.8);
+		}
+		return -1;
+	}
+
 	protected Player ownner;
+
+	public void resetOwnner() {
+		setOwnner(null);
+	}
 
 	public Player getOwnner() {
 		return ownner;
@@ -222,23 +254,16 @@ public abstract class Hero {
 		this.attackType = attackType;
 	}
 
-	public void update(Hero hero1, Hero hero2) {
-		Class clazz = this.getClass();
-		String n1 = clazz.getName();
-		String n2 = hero1.getClass().getName();
-		String n3 = hero2.getClass().getName();
-		if(n1 == n2 && n2 == n3) {
-			levelUp();
-		}
+	public void update() {
+		setHp(getHp() * 2);
+		setAd(getAd() * 2);
+		setAp(getAp() * 2);
+		setCri(getCri() + 10);
+		setDex(getDex() + 10);
+		setEvasion(getEvasion() + 5);
+		starUp();
 	}
 
-	/**
-	 * 
-	 */
-	private void levelUp() {
-		// TODO Ӣ������
-	}
-	
 	/**
 	  * Ӣ�ۼ���
 	 */

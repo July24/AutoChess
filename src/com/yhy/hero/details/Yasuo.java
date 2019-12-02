@@ -10,8 +10,8 @@ public class Yasuo extends Hero implements BladeMaster, Exiler {
 		title = "疾风剑豪";
 		price = 5;
 		//TODO
-		skillName = "ħ������";
-		skillDesc = "��ͨ������Ϊ �����һ��";
+		skillName = "待开发";
+		skillDesc = "待开发";
 	}
 	
 	protected void skill() {

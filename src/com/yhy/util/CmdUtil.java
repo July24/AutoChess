@@ -26,6 +26,7 @@ public class CmdUtil {
 	private static final String REGEX_LINEUPINFO_COMMAND	= "^([1-9])$";
 	private static final String REGEX_LINEUPINFO_MENU    = "^(exit)$";
 
+	private static final String REGEX_CHECK_COMMAND	= "^([1-9])$";
 	private static final String REGEX_CHECK_MENU    = "^(exit)$";
 
 	private static final String REGEX_HEROREPLACE_MENU	= "^(exit|area|chess|end)$";
@@ -35,7 +36,15 @@ public class CmdUtil {
 
 	private static final String REGEX_HEROREPLACEFROMCHESS_COMMAND	= "^([1-9])$";
 	private static final String REGEX_HEROREPLACEFROMCHESS_MENU    = "^(exit)$";
-	
+
+	private static final String REGEX_HEROINFO_MENU	= "^(exit|sell)$";
+	public static final String HEROINFO_MENU_SELL	= "sell";
+	public static final String HEROINFO_MENU_EXIT	= "exit";
+
+	public static boolean heroInfoMenuInMatch(String content) {
+		return inMatch(REGEX_HEROINFO_MENU, content);
+	}
+
 	public static boolean heroReplaceMenuInMatch(String content) {
 		return inMatch(REGEX_HEROREPLACE_MENU, content);
 	}
@@ -59,7 +68,12 @@ public class CmdUtil {
 	public static boolean lineUpMenuInMatch(String content) {
 		return inMatch(REGEX_LINEUP_MENU, content);
 	}
-	
+
+
+	public static boolean CheckCmdInMatch(String content) {
+		return inMatch(REGEX_CHECK_COMMAND, content);
+	}
+
 	public static boolean CheckMenuInMatch(String content) {
 		return inMatch(REGEX_CHECK_MENU, content);
 	}
@@ -85,6 +99,6 @@ public class CmdUtil {
 	public static void main(String[] args) {
 //		System.out.println(CmdUtil.inMatch("^(exit|refresh)$", "Exit"));
 //		System.out.println(inMatch("^([1-0])$", "1"));
-		System.out.println((3) / 3);
+		System.out.println(Math.floor(1.6));
 	}
 }

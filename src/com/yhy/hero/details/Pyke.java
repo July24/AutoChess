@@ -10,8 +10,8 @@ public class Pyke extends Hero implements Assassin, Pirate{
 		title = "血港鬼影";
 		price = 1;
 		//TODO
-		skillName = "ħ������";
-		skillDesc = "��ͨ������Ϊ �����һ��";
+		skillName = "待开发";
+		skillDesc = "待开发";
 	}
 	
 	protected void skill() {

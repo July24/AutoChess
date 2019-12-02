@@ -10,8 +10,8 @@ public class Evelynn extends Hero implements Assassin, Demon {
 		title = "痛苦之拥";
 		price = 3;
 		//TODO
-		skillName = "ħ������";
-		skillDesc = "��ͨ������Ϊ �����һ��";
+		skillName = "待开发";
+		skillDesc = "待开发";
 	}
 	
 	protected void skill() {

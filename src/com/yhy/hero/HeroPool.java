@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Ӣ�۳�
+ * Ӣ�۳�
  */
 public class HeroPool {
 	List<Hero> heroList;
@@ -12,7 +12,7 @@ public class HeroPool {
 	public HeroPool() {
 		heroList = new ArrayList<Hero>();
 		//TODO
-		for(int i = 0; i < 2; i++) {
+		for(int i = 0; i < 30; i++) {
 			heroList.add(HeroFactory.getShyvana());
 			heroList.add(HeroFactory.getPyke());
 			heroList.add(HeroFactory.getKhaZix());

@@ -8,6 +8,7 @@ import com.yhy.Player;
 import com.yhy.hero.Hero;
 import com.yhy.hero.HeroPool;
 import com.yhy.hero.HeroShop;
+import com.yhy.hero.HeroUtil;
 import com.yhy.util.CmdUtil;
 
 public class SingleFlowControl {
@@ -84,18 +85,38 @@ public class SingleFlowControl {
 	}
 
 	private void areaResolve() throws Exception {
-		if(player.getArea().size() == 0) {
+		if(player.areaEmpty()) {
 			System.out.println("*****你的备战区内无英雄*****");
 			Thread.sleep(1000);
 			return;
 		}
-		System.out.println(FlowConst.LINE);
-		showPrepareBegin();
-		System.out.println("*****你的备战区英雄列表*****");
-		showArea();
-		System.out.println("**输入任意内容返回准备阶段**");
-		System.out.println(FlowConst.LINE);
-		String cmd = scan.next();
+		while(true) {
+			System.out.println(FlowConst.LINE);
+			showPrepareBegin();
+			System.out.println("*****你的备战区英雄列表*****");
+			showArea();
+			System.out.println("*******输入序号查看英雄信息*******");
+			System.out.println("*********exit返回准备界面*********");
+			System.out.println(FlowConst.LINE);
+			String cmd = scan.next();
+			if(CmdUtil.CheckMenuInMatch(cmd)) {
+				Thread.sleep(1000);
+				return;
+			} else if(CmdUtil.CheckCmdInMatch(cmd)) {
+				int num = Integer.valueOf(cmd);
+				Hero hero = player.getArea().get(num - 1);
+				if(hero == null) {
+					System.out.println("***********该位置无英雄***********");
+					Thread.sleep(1000);
+				} else {
+					showHeroResolve(hero);
+				}
+			} else {
+				errorTip();
+				Thread.sleep(1000);
+			}
+
+		}
 	}
 
 	private void lineUpResolve() throws Exception {
@@ -188,7 +209,7 @@ public class SingleFlowControl {
 				if(hero != null) {
 					System.out.println(index++ + "." + getPosInfo(pos) + " " + hero.getTitle() + hero.getName() + "(" + hero.getStar() + ")");
 				} else {
-					System.out.println(index++ + "." + getPosInfo(pos) + " 无英�? ");
+					System.out.println(index++ + "." + getPosInfo(pos) + " 无英雄");
 				}
 			}
 		}
@@ -251,7 +272,7 @@ public class SingleFlowControl {
 	}
 
 	private void lineUpAreaSel(int pos) throws Exception {
-		if(player.getArea().size() == 0) {
+		if(player.areaEmpty()) {
 			System.out.println("*****你的备战区内无英雄*****");
 			Thread.sleep(1000);
 			return;
@@ -307,17 +328,73 @@ public class SingleFlowControl {
 	}
 
 	private void checkResolve() throws Exception {
-		System.out.println(FlowConst.LINE);
-		showPrepareBegin();
-		showLineUp();
-		System.out.println("*********exit返回准备界面*********");
-		System.out.println(FlowConst.LINE);
-		String cmd = scan.next();
-		if(CmdUtil.CheckMenuInMatch(cmd)) {
-			Thread.sleep(1000);
+		while(true) {
+			System.out.println(FlowConst.LINE);
+			showPrepareBegin();
+			showLineUp();
+			System.out.println("*******输入序号查看英雄信息*******");
+			System.out.println("*********exit返回准备界面*********");
+			System.out.println(FlowConst.LINE);
+			String cmd = scan.next();
+			if(CmdUtil.CheckMenuInMatch(cmd)) {
+				Thread.sleep(1000);
+				return;
+			} else if(CmdUtil.CheckCmdInMatch(cmd)) {
+				int num = Integer.valueOf(cmd);
+				Hero hero = player.getBoardHero(num);
+				if(hero == null) {
+					System.out.println("***********该位置无英雄***********");
+					Thread.sleep(1000);
+				} else {
+					showHeroResolve(hero);
+				}
+			} else {
+				errorTip();
+				Thread.sleep(1000);
+			}
 		}
 	}
-	
+
+	private void showHeroResolve(Hero hero) throws Exception {
+		while (true) {
+			System.out.println(FlowConst.LINE);
+			showPrepareBegin();
+			System.out.println("英雄名:" + hero.getTitle() + hero.getName());
+			System.out.println("种族:" + HeroUtil.getHeroRace(hero));
+			System.out.println("职业:" + HeroUtil.getHeroJob(hero));
+			System.out.println("生命值:" + hero.getHp());
+			System.out.println("生命值:" + hero.getHp());
+			System.out.println("攻击力:" + hero.getAd());
+			System.out.println("魔法攻击力:" + hero.getAp());
+			System.out.println("物理减伤:" + hero.getArmor());
+			System.out.println("魔法减伤:" + hero.getSpell_resistance());
+			System.out.println("技能:" + hero.getSkillName());
+			System.out.println("技能效果:" + hero.getSkillDesc());
+			System.out.println("星级:" + hero.getStar());
+			System.out.println("售价:" + hero.getSellingPrice());
+			System.out.println("**********sell卖掉该英雄**********");
+			System.out.println("**********exit返回上一界面********");
+			System.out.println(FlowConst.LINE);
+			String cmd = scan.next();
+			if(CmdUtil.heroInfoMenuInMatch(cmd)) {
+				switch (cmd) {
+					case CmdUtil.HEROINFO_MENU_SELL:
+						System.out.println("************卖出英雄成功**********");
+						player.sellHero(hero);
+						Thread.sleep(1000);
+						return;
+					case CmdUtil.HEROINFO_MENU_EXIT:
+						Thread.sleep(1000);
+						return;
+					default:
+						throw new Exception("英雄详情界面出现未知错误");
+				}
+			} else {
+				errorTip();
+			}
+		}
+	}
+
 	public void showLineUp() {
 		Hero[][] lineUp = player.getHeroLineUp();
 		System.out.println("**********你的阵容***********");
@@ -403,7 +480,7 @@ public class SingleFlowControl {
 						continue;
 					}
 					int ret = player.buyHero(hero);
-					buyHeroResolve(ret);
+					buyHeroResolve(ret, hero);
 					if(ret == Player.BUYHERO_SUCCESS) {
 						heros[input - 1] = null;
 					}
@@ -430,10 +507,14 @@ public class SingleFlowControl {
 		Thread.sleep(1000);
 	}
 
-	private void buyHeroResolve(int ret) throws Exception {
+	private void buyHeroResolve(int ret, Hero hero) throws Exception {
 		switch (ret) {
 		case Player.BUYHERO_SUCCESS:
 			System.out.println("**********购买成功**********");
+			Hero up = player.heroAutoUpdate(hero);
+			if(up != null) {
+				System.out.println(up.getTitle() + up.getName() + "(" + up.getStar() + ")" +"升星成功！");
+			}
 			Thread.sleep(1000);
 			break;
 		case Player.BUYHERO_NO_MONEY:

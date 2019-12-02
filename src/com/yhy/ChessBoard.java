@@ -10,7 +10,7 @@ public class ChessBoard {
 		chess = new Hero[3][3];
 		ownner = player;
 	}
-	
+
 	public Player getOwnner() {
 		return ownner;
 	}

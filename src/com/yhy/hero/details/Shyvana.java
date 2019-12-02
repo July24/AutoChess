@@ -13,8 +13,8 @@ public class Shyvana extends Hero implements ShapeShifter, Dragon{
 		name  = "Shyvana";
 		title = "龙血武姬";
 		price = 2;
-		skillName = "ħ������";
-		skillDesc = "��ͨ������Ϊ �����һ��";
+		skillName = "待开发";
+		skillDesc = "待开发";
 	}
 	
 	protected void skill() {

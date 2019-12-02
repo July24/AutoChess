@@ -1,8 +1,5 @@
 package com.yhy.hero;
 
-/**
- * ”¢–€…ÃµÍ
- */
 public class HeroShop {
 	private static int SHOP_HERO_COUNT = 5;
 	private boolean lock;
@@ -39,6 +36,9 @@ public class HeroShop {
 	}
 
 	public void refreshShop() {
+		if(heros != null) {
+			returnRemainHero();
+		}
 		if(!lock) {
 			heros = new Hero[SHOP_HERO_COUNT];
 			for(int i = 0; i < SHOP_HERO_COUNT; i++) {
@@ -46,11 +46,26 @@ public class HeroShop {
 			}
 		}
 	}
-	
+
+	private void returnRemainHero() {
+		for(int i = 0; i < SHOP_HERO_COUNT; i++) {
+			Hero hero = heros[i];
+			if(hero != null) {
+				heroPool.returnHero(hero);
+			}
+		}
+	}
+
 	public void clearShop() {
 		for(Hero hero : heros) {
 			heroPool.returnHero(hero);
 		}
 		heros = null;
+	}
+
+	public void sellHero(Hero hero) {
+		hero.resetStar();
+		hero.resetOwnner();
+		heroPool.returnHero(hero);
 	}
 }
